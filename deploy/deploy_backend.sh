@@ -10,6 +10,14 @@ echo "==================================="
 echo "Deploying Backend"
 echo "==================================="
 
+# Update repository if git metadata exists
+if [ -d "$APP_DIR/.git" ]; then
+	echo "Updating project from git..."
+	git -C "$APP_DIR" pull --ff-only
+else
+	echo "Git metadata not found, skipping git pull"
+fi
+
 cd $BACKEND_DIR
 
 # Create virtual environment
@@ -35,7 +43,7 @@ After=network.target
 Type=simple
 User=$USER
 WorkingDirectory=$BACKEND_DIR
-Environment="PATH=$BACKEND_DIR/venv/bin"
+Environment="PATH=$BACKEND_DIR/venv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 ExecStart=$BACKEND_DIR/venv/bin/uvicorn main:app --host 0.0.0.0 --port 8000
 Restart=always
 RestartSec=10

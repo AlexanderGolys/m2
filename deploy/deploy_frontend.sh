@@ -10,6 +10,14 @@ echo "==================================="
 echo "Deploying Frontend"
 echo "==================================="
 
+# Update repository if git metadata exists
+if [ -d "$APP_DIR/.git" ]; then
+	echo "Updating project from git..."
+	git -C "$APP_DIR" pull --ff-only
+else
+	echo "Git metadata not found, skipping git pull"
+fi
+
 cd $FRONTEND_DIR
 
 # Install dependencies
