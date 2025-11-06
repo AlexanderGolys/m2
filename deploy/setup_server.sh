@@ -4,6 +4,9 @@
 
 set -e  # Exit on error
 
+# Prevent interactive prompts during installation
+export DEBIAN_FRONTEND=noninteractive
+
 echo "==================================="
 echo "Macaulay2 Web Interface Setup"
 echo "==================================="

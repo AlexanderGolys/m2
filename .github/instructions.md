@@ -1,0 +1,1 @@
+1. Never use emoji in Readme.md  or any file containing any code

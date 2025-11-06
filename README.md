@@ -2,24 +2,24 @@
 
 A modern web application that provides an interactive interface to execute Macaulay2 code in your browser. Features a React + TypeScript frontend with shadcn/ui components and a FastAPI backend with resource-limited execution.
 
-## 🎯 Overview
+## Overview
 
 This project allows users to write and execute Macaulay2 code through a web interface, with real-time results displayed in an intuitive UI. The backend runs Macaulay2 on a Linux server with strict resource limits to ensure safe execution.
 
-## ✨ Features
+## Features
 
-- 🎨 Modern React UI with shadcn/ui components and TailwindCSS
-- ⚡ Real-time Macaulay2 code execution
-- 🔒 Resource-limited execution (CPU, memory, time limits)
-- 📝 Syntax-highlighted output display
-- ⌨️ Keyboard shortcuts (Ctrl+Enter to execute)
-- 🌙 Dark mode support
-- 🚀 Fast development with Vite
-- 🛡️ Secure execution in isolated environment
-- ⏱️ 35-second timeout protection
-- 💾 512MB memory limit per execution
+- Modern React UI with shadcn/ui components and TailwindCSS
+- Real-time Macaulay2 code execution
+- Resource-limited execution (CPU, memory, time limits)
+- Syntax-highlighted output display
+- Keyboard shortcuts (Ctrl+Enter to execute)
+- Dark mode support
+- Fast development with Vite
+- Secure execution in isolated environment
+- 5-second timeout protection
+- 512MB memory limit per execution
 
-## 📋 Project Structure
+## Project Structure
 
 ```
 m2/
