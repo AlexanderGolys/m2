@@ -1,0 +1,8 @@
+node_modules
+dist
+dist-ssr
+*.local
+.env
+QUICKSTART.md
+WINDOWS-DEVELOPMENT.md
+DEPLOYMENT.md
