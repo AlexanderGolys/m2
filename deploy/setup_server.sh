@@ -1,28 +1,21 @@
-#!/bin/bash
-# Server Setup Script for Macaulay2 Web Interface
-# Run this on your Ubuntu server
 
 set -e  # Exit on error
 
-# Prevent interactive prompts during installation
 export DEBIAN_FRONTEND=noninteractive
 
 echo "==================================="
 echo "Macaulay2 Web Interface Setup"
 echo "==================================="
 
-# Update system
 echo "Updating system packages..."
 sudo apt update
 sudo apt upgrade -y
 
-# Install Macaulay2
 echo "Installing Macaulay2..."
 sudo apt install -y macaulay2
 
-# Verify Macaulay2 installation
-echo "Verifying Macaulay2 installation..."
-M2 --version
+# echo "Verifying Macaulay2 installation..."
+# sudo M2 --version
 
 # Install Python and pip
 echo "Installing Python and pip..."
