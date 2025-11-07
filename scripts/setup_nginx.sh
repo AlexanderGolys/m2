@@ -11,9 +11,6 @@ if [ -z "$DOMAIN" ]; then
     exit 1
 fi
 
-echo "==================================="
-echo "Configuring Nginx for $DOMAIN"
-echo "==================================="
 
 # Create Nginx configuration
 sudo tee /etc/nginx/sites-available/m2-interface > /dev/null <<EOF
@@ -77,9 +74,3 @@ echo "==================================="
 echo "Nginx configured successfully!"
 echo "==================================="
 echo ""
-echo "Next steps:"
-echo "1. Make sure your domain DNS A record points to this server's IP"
-echo "2. Wait for DNS propagation (can take up to 48 hours)"
-echo "3. Run setup_ssl.sh to enable HTTPS"
-echo ""
-echo "Your site should now be accessible at http://$DOMAIN"

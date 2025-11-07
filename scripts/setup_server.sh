@@ -3,9 +3,6 @@ set -e  # Exit on error
 
 export DEBIAN_FRONTEND=noninteractive
 
-echo "==================================="
-echo "Macaulay2 Web Interface Setup"
-echo "==================================="
 
 echo "Updating system packages..."
 sudo apt update
@@ -50,8 +47,3 @@ echo "==================================="
 echo "Base setup complete!"
 echo "==================================="
 echo ""
-echo "Next steps:"
-echo "1. Clone/upload your application to /var/www/m2-interface"
-echo "2. Run deploy_backend.sh to set up the backend"
-echo "3. Run deploy_frontend.sh to build and deploy the frontend"
-echo "4. Run setup_nginx.sh to configure the web server"

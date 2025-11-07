@@ -29,3 +29,4 @@ echo "==================================="
 echo ""
 echo "Your site is now accessible at https://$DOMAIN"
 echo "Certificates will auto-renew via cron job"
+ 
