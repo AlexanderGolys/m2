@@ -24,7 +24,10 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173",  # Vite dev server
         "http://localhost:3000",  # Alternative dev port
-        # Add your production domain here
+        "https://macaulay2.fun",  # Production domain
+        "http://macaulay2.fun",   # Production domain (HTTP)
+        "https://www.macaulay2.fun",  # Production domain with www
+        "http://www.macaulay2.fun",   # Production domain with www (HTTP)
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -87,12 +90,14 @@ async def execute_code(request: CodeRequest):
             # Macaulay2 command
             # -q: quiet mode (suppress banner)
             # --script: run script and exit
+            # Alternative: use --no-readline for better non-interactive output
+            # We'll use -e to evaluate code directly and print to ensure output
+            
+            # Method 1: Try with --script
             cmd = ['M2', '--script', str(code_file)]
             
-            # On Windows, M2 might not be in PATH during development
-            # The command will work on Linux server after installation
-            
             logger.info(f"Executing Macaulay2 code ({len(request.code)} bytes)")
+            logger.info(f"Command: {' '.join(cmd)}")
             
             result = subprocess.run(
                 cmd,
@@ -104,6 +109,13 @@ async def execute_code(request: CodeRequest):
             )
             
             logger.info(f"Execution completed with return code {result.returncode}")
+            logger.info(f"STDOUT length: {len(result.stdout)}, STDERR length: {len(result.stderr)}")
+            
+            # Log first 500 chars of output for debugging
+            if result.stdout:
+                logger.info(f"STDOUT preview: {result.stdout[:500]}")
+            if result.stderr:
+                logger.info(f"STDERR preview: {result.stderr[:500]}")
             
             return CodeResponse(
                 stdout=result.stdout,
@@ -160,6 +172,83 @@ async def health_check():
             "cpu_time_limit_seconds": 30
         }
     }
+
+
+@app.post("/test-m2")
+async def test_m2():
+    """
+    Test endpoint to verify M2 execution with simple code
+    Tries multiple execution methods
+    """
+    test_code = "2+2"
+    results = {}
+    
+    # Method 1: stdin
+    try:
+        result = subprocess.run(
+            ['M2', '-q', '--stop'],
+            input=test_code + "\nexit\n",
+            capture_output=True,
+            text=True,
+            timeout=5
+        )
+        results["stdin_method"] = {
+            "returncode": result.returncode,
+            "stdout": result.stdout,
+            "stderr": result.stderr,
+            "stdout_length": len(result.stdout),
+            "stderr_length": len(result.stderr),
+        }
+    except Exception as e:
+        results["stdin_method"] = {"error": str(e)}
+    
+    # Method 2: script file
+    try:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            code_file = Path(temp_dir) / "test.m2"
+            code_file.write_text(test_code, encoding='utf-8')
+            
+            result = subprocess.run(
+                ['M2', '--script', str(code_file)],
+                cwd=temp_dir,
+                capture_output=True,
+                text=True,
+                timeout=5
+            )
+            results["script_method"] = {
+                "returncode": result.returncode,
+                "stdout": result.stdout,
+                "stderr": result.stderr,
+                "stdout_length": len(result.stdout),
+                "stderr_length": len(result.stderr),
+            }
+    except Exception as e:
+        results["script_method"] = {"error": str(e)}
+    
+    # Method 3: quiet script
+    try:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            code_file = Path(temp_dir) / "test.m2"
+            code_file.write_text(test_code, encoding='utf-8')
+            
+            result = subprocess.run(
+                ['M2', '-q', '--script', str(code_file)],
+                cwd=temp_dir,
+                capture_output=True,
+                text=True,
+                timeout=5
+            )
+            results["quiet_script_method"] = {
+                "returncode": result.returncode,
+                "stdout": result.stdout,
+                "stderr": result.stderr,
+                "stdout_length": len(result.stdout),
+                "stderr_length": len(result.stderr),
+            }
+    except Exception as e:
+        results["quiet_script_method"] = {"error": str(e)}
+    
+    return results
 
 
 if __name__ == "__main__":

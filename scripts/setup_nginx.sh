@@ -73,4 +73,3 @@ sudo systemctl restart nginx
 echo "==================================="
 echo "Nginx configured successfully!"
 echo "==================================="
-echo ""
