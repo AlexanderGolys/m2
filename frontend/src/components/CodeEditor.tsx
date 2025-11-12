@@ -93,7 +93,7 @@ export function CodeEditor() {
                   },
                   overviewRulerLanes: 0,
                   hideCursorInOverviewRuler: true,
-                  renderLineHighlight: 'background',
+                  renderLineHighlight: 'gutter',
                   lineHighlightBackground: 'rgba(255, 255, 255, 0.05)',
                 }}
                 onMount={() => {
