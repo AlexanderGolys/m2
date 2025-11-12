@@ -1,7 +1,24 @@
 #!/bin/bash
-# This script is deprecated - use deploy_backend.sh instead
-# It handles both frontend and backend deployments
+# Deploy Frontend Script
 
-echo "This script is no longer needed"
-echo "Use: bash deploy_backend.sh --frontend instead"
-exec bash "$(dirname "$0")/deploy_backend.sh" --frontend
+set -e
+
+FRONTEND_DIR="/var/www/m2-interface/frontend"
+
+echo "Deploying Frontend"
+echo ""
+
+cd "$FRONTEND_DIR"
+
+echo "Installing Node.js dependencies..."
+npm install -q
+
+echo "Building frontend for production..."
+npm run build
+
+echo "Deploying to web server..."
+sudo rm -rf /var/www/html/m2/*
+sudo cp -r dist/* /var/www/html/m2/
+
+echo ""
+echo "Frontend deployed successfully"
