@@ -5,6 +5,21 @@
 		}
 	],
 	"settings": {
-		"workbench.colorTheme": "Winter is Coming (Dark Blue - No Italics)"
+		"workbench.colorTheme": "Winter is Coming (Dark Blue - No Italics)",
+		"git.allowForcePush": true,
+		"git.allowNoVerifyCommit": true,
+		"git.branchProtectionPrompt": "alwaysCommit",
+		"git.confirmEmptyCommits": false,
+		"git.confirmNoVerifyCommit": false,
+		"git.confirmSync": false,
+		"git.confirmForcePush": false,
+		"git.mergeEditor": true,
+		"git.promptToSaveFilesBeforeCommit": "never",
+		"git.promptToSaveFilesBeforeStash": "never",
+		"git.supportCancellation": true,
+		"github.copilot.chat.scopeSelection": true,
+		"github.copilot.chat.localeOverride": "en",
+		"github.copilot.chat.codesearch.enabled": true,
+		"github.copilot.chat.agent.thinkingTool": true
 	}
 }

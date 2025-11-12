@@ -83,24 +83,17 @@ async def execute_code(request: CodeRequest):
     # Create isolated temporary directory for execution
     with tempfile.TemporaryDirectory() as temp_dir:
         try:
-            # Write code to temporary file
-            code_file = Path(temp_dir) / "input.m2"
-            code_file.write_text(request.code, encoding='utf-8')
-            
-            # Macaulay2 command
-            # -q: quiet mode (suppress banner)
-            # --script: run script and exit
-            # Alternative: use --no-readline for better non-interactive output
-            # We'll use -e to evaluate code directly and print to ensure output
-            
-            # Method 1: Try with --script
-            cmd = ['M2', '--script', str(code_file)]
+            # Macaulay2 command using stdin method
+            # This is the only method that produces output reliably
+            # --stop: non-interactive mode, exit after processing
+            # We send code via stdin and add "exit" to ensure clean termination
             
             logger.info(f"Executing Macaulay2 code ({len(request.code)} bytes)")
-            logger.info(f"Command: {' '.join(cmd)}")
+            logger.info(f"Command: M2 --stop (via stdin)")
             
             result = subprocess.run(
-                cmd,
+                ['M2', '--stop'],
+                input=request.code + "\nexit\n",
                 cwd=temp_dir,  # Run in isolated directory
                 capture_output=True,
                 text=True,
@@ -117,9 +110,13 @@ async def execute_code(request: CodeRequest):
             if result.stderr:
                 logger.info(f"STDERR preview: {result.stderr[:500]}")
             
+            # M2 --stop outputs banner to stderr, which is not an error
+            # Only keep stderr if there's an actual error (non-zero return code)
+            stderr_output = result.stderr if result.returncode != 0 else ""
+            
             return CodeResponse(
                 stdout=result.stdout,
-                stderr=result.stderr,
+                stderr=stderr_output,
                 success=result.returncode == 0,
                 error_message=None if result.returncode == 0 else f"Process exited with code {result.returncode}"
             )
