@@ -108,7 +108,7 @@ export function CodeEditor() {
                         'editor.lineNumbersColumn.background': '#111827',
                         'editorLineNumber.foreground': '#6b7280',
                         'editorLineNumber.activeForeground': '#d1d5db',
-                        'editor.lineHighlightBackground': 'rgba(255, 255, 255, 0.05)',
+                        'editor.lineHighlightBackground': '#1a202c',
                       },
                     });
                     monaco.editor.setTheme('custom-dark');
