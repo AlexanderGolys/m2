@@ -82,7 +82,7 @@ export function CodeEditor() {
                 theme="vs-dark"
                 options={{
                   minimap: { enabled: false },
-                  fontSize: 14,
+                  fontSize: 16,
                   fontFamily: 'monospace',
                   wordWrap: 'on',
                   automaticLayout: true,
@@ -93,6 +93,8 @@ export function CodeEditor() {
                   },
                   overviewRulerLanes: 0,
                   hideCursorInOverviewRuler: true,
+                  renderLineHighlight: 'background',
+                  lineHighlightBackground: 'rgba(255, 255, 255, 0.05)',
                 }}
                 onMount={() => {
                   const monaco = (window as any).monaco;
@@ -104,7 +106,9 @@ export function CodeEditor() {
                       colors: {
                         'editor.background': '#0c1219',
                         'editor.foreground': '#e2e8f0',
-                        'editor.lineNumbersColumn.background': '#0c1219',
+                        'editor.lineNumbersColumn.background': '#111827',
+                        'editorLineNumber.foreground': '#6b7280',
+                        'editorLineNumber.activeForeground': '#d1d5db',
                       },
                     });
                     monaco.editor.setTheme('custom-dark');
