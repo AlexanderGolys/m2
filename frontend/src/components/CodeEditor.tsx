@@ -79,7 +79,7 @@ export function CodeEditor() {
                 defaultLanguage="macaulay2"
                 value={code}
                 onChange={(value: string | undefined) => setCode(value || '')}
-                theme="vs-dark"
+                theme="custom-dark"
                 options={{
                   minimap: { enabled: false },
                   fontSize: 16,
@@ -93,7 +93,7 @@ export function CodeEditor() {
                   },
                   overviewRulerLanes: 0,
                   hideCursorInOverviewRuler: true,
-                  renderLineHighlight: 'gutter',
+                  renderLineHighlight: 'all',
                 }}
                 onMount={() => {
                   const monaco = (window as any).monaco;
@@ -108,9 +108,8 @@ export function CodeEditor() {
                         'editor.lineNumbersColumn.background': '#111827',
                         'editorLineNumber.foreground': '#6b7280',
                         'editorLineNumber.activeForeground': '#d1d5db',
-                        'editorLineNumber.activeBackground': 'transparent',
                         'editor.lineHighlightBackground': '#1a202c',
-                        'editor.lineHighlightBorder': 'transparent',
+                        'editor.lineHighlightBorder': '#00000000',
                       },
                     });
                     monaco.editor.setTheme('custom-dark');
