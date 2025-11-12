@@ -94,7 +94,6 @@ export function CodeEditor() {
                   overviewRulerLanes: 0,
                   hideCursorInOverviewRuler: true,
                   renderLineHighlight: 'gutter',
-                  lineHighlightBackground: 'rgba(255, 255, 255, 0.05)',
                 }}
                 onMount={() => {
                   const monaco = (window as any).monaco;
@@ -109,6 +108,7 @@ export function CodeEditor() {
                         'editor.lineNumbersColumn.background': '#111827',
                         'editorLineNumber.foreground': '#6b7280',
                         'editorLineNumber.activeForeground': '#d1d5db',
+                        'editor.lineHighlightBackground': 'rgba(255, 255, 255, 0.05)',
                       },
                     });
                     monaco.editor.setTheme('custom-dark');
