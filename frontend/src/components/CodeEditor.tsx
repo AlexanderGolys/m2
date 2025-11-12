@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Editor from '@monaco-editor/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,6 +10,13 @@ export function CodeEditor() {
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
   const [isExecuting, setIsExecuting] = useState(false);
+  const outputRef = useRef<HTMLPreElement>(null);
+
+  useEffect(() => {
+    if (outputRef.current) {
+      outputRef.current.scrollTop = outputRef.current.scrollHeight;
+    }
+  }, [output]);
 
   const handleExecute = async () => {
     if (!code.trim()) {
@@ -79,6 +86,13 @@ export function CodeEditor() {
                   fontFamily: 'monospace',
                   wordWrap: 'on',
                   automaticLayout: true,
+                  scrollBeyondLastLine: false,
+                  scrollbar: {
+                    vertical: 'auto',
+                    horizontal: 'auto',
+                  },
+                  overviewRulerLanes: 0,
+                  hideCursorInOverviewRuler: true,
                 }}
                 onMount={() => {
                   const monaco = (window as any).monaco;
@@ -132,7 +146,7 @@ export function CodeEditor() {
             <div className="space-y-4">
               {/* Standard Output */}
               {output && (
-                <pre className="overflow-auto max-h-[400px] text-sm font-mono whitespace-pre-wrap">
+                <pre ref={outputRef} className="overflow-auto max-h-[400px] text-sm font-mono whitespace-pre-wrap">
                   {output}
                 </pre>
               )}
