@@ -80,6 +80,22 @@ export function CodeEditor() {
                   wordWrap: 'on',
                   automaticLayout: true,
                 }}
+                onMount={() => {
+                  const monaco = (window as any).monaco;
+                  if (monaco) {
+                    monaco.editor.defineTheme('custom-dark', {
+                      base: 'vs-dark',
+                      inherit: true,
+                      rules: [],
+                      colors: {
+                        'editor.background': '#0c1219',
+                        'editor.foreground': '#e2e8f0',
+                        'editor.lineNumbersColumn.background': '#0c1219',
+                      },
+                    });
+                    monaco.editor.setTheme('custom-dark');
+                  }
+                }}
               />
             </div>
             <div className="mt-4">
