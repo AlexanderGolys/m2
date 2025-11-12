@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import Editor from '@monaco-editor/react';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { executeCode, ApiError } from '@/lib/api';
 import { Play, Loader2, Terminal } from 'lucide-react';
@@ -44,14 +44,6 @@ export function CodeEditor() {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // Ctrl+Enter or Cmd+Enter to execute
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      e.preventDefault();
-      handleExecute();
-    }
-  };
-
   return (
     <div className="container mx-auto p-4 max-w-6xl">
       <div className="mb-6">
@@ -74,18 +66,22 @@ export function CodeEditor() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Textarea
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="-- Enter Macaulay2 code here...
--- Example:
-R = QQ[x,y,z]
-I = ideal(x^2 + y^2, z^2)
-gens gb I"
-              className="min-h-[400px] font-mono text-sm"
-              disabled={isExecuting}
-            />
+            <div className="border rounded-md overflow-hidden" style={{ height: '400px' }}>
+              <Editor
+                height="100%"
+                defaultLanguage="macaulay2"
+                value={code}
+                onChange={(value: string | undefined) => setCode(value || '')}
+                theme="vs-dark"
+                options={{
+                  minimap: { enabled: false },
+                  fontSize: 14,
+                  fontFamily: 'monospace',
+                  wordWrap: 'on',
+                  automaticLayout: true,
+                }}
+              />
+            </div>
             <div className="mt-4">
               <Button 
                 onClick={handleExecute} 
