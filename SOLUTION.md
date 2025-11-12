@@ -1,4 +1,4 @@
-# ✅ SOLUTION FOUND!
+# SOLUTION FOUND!
 
 ## The Issue
 Test results show that `M2 --script` produces **no output**, but `M2 --stop` (stdin method) **works perfectly**!
@@ -49,9 +49,9 @@ You should see the output with "o1 = 4"!
 ## Why This Works
 
 From your test results:
-- ❌ `M2 --script` → Empty stdout
-- ❌ `M2 -q --script` → Timeout
-- ✅ `M2 --stop` (stdin) → **260 chars of output!**
+- X `M2 --script` → Empty stdout
+- X `M2 -q --script` → Timeout
+- CHECK `M2 --stop` (stdin) → 260 chars of output!
 
 The stdin method is the only one that produces output reliably.
 
@@ -59,4 +59,4 @@ The stdin method is the only one that produces output reliably.
 
 The test showed M2 outputs its version banner to stderr. I updated the code to ignore stderr when return code is 0 (success), so users won't see the banner as an "error".
 
-## Ready to Deploy! 🚀
+## Ready to Deploy!

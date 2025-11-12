@@ -120,23 +120,18 @@ gens gb I"
             <div className="space-y-4">
               {/* Standard Output */}
               {output && (
-                <div>
-                  <h3 className="text-sm font-semibold mb-2 text-green-600 dark:text-green-400">
-                    Standard Output:
-                  </h3>
-                  <pre className="bg-muted p-4 rounded-md overflow-auto max-h-[300px] text-sm font-mono whitespace-pre-wrap">
-                    {output}
-                  </pre>
-                </div>
+                <pre className="overflow-auto max-h-[400px] text-sm font-mono whitespace-pre-wrap">
+                  {output}
+                </pre>
               )}
 
               {/* Error Output */}
               {error && (
                 <div>
-                  <h3 className="text-sm font-semibold mb-2 text-destructive">
+                  <h3 className="text-sm font-semibold mb-2 text-red-600 dark:text-red-400">
                     Error:
                   </h3>
-                  <pre className="bg-destructive/10 text-destructive p-4 rounded-md overflow-auto max-h-[300px] text-sm font-mono whitespace-pre-wrap border border-destructive/20">
+                  <pre className="text-red-600 dark:text-red-400 overflow-auto max-h-[300px] text-sm font-mono whitespace-pre-wrap">
                     {error}
                   </pre>
                 </div>
@@ -161,18 +156,6 @@ gens gb I"
           </CardContent>
         </Card>
       </div>
-
-      {/* Tips */}
-      <Card className="mt-4">
-        <CardHeader>
-          <CardTitle className="text-lg">Tips</CardTitle>
-        </CardHeader>
-        <CardContent className="text-sm text-muted-foreground space-y-1">
-          <p>• Press <kbd className="px-2 py-1 bg-muted rounded">Ctrl+Enter</kbd> to execute code quickly</p>
-          <p>• Code execution is limited to 35 seconds with 512MB memory</p>
-          <p>• The backend must be running on <code className="px-1 bg-muted rounded">http://localhost:8000</code></p>
-        </CardContent>
-      </Card>
     </div>
   );
 }

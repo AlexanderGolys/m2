@@ -3,9 +3,8 @@
 
 set -e
 
-echo "=================================="
 echo "Quick Deploy: Macaulay2 Interface"
-echo "=================================="
+echo ""
 
 cd /var/www/m2-interface
 
@@ -40,9 +39,7 @@ sudo systemctl status m2-backend --no-pager | head -15
 # sudo cp -r dist/* /var/www/html/m2/
 
 echo ""
-echo "=================================="
 echo "Deployment complete!"
-echo "=================================="
 echo ""
 echo "Test the backend:"
 echo "  curl http://localhost:8000/health"
