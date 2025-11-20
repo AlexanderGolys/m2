@@ -8,7 +8,20 @@ BACKEND_DIR="/var/www/m2-interface/backend"
 echo "Deploying Backend"
 echo ""
 
+
+
 cd "$BACKEND_DIR"
+echo "Checking out main branch and pulling latest code..."
+git fetch origin main
+git checkout main
+git pull origin main
+
+# Safety check: abort if not on main branch
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+if [ "$CURRENT_BRANCH" != "main" ]; then
+	echo "ERROR: Not on main branch! Aborting deployment."
+	exit 1
+fi
 
 if [ ! -d "venv" ]; then
 	echo "Creating Python virtual environment..."

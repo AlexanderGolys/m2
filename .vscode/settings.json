@@ -1,0 +1,9 @@
+{
+    "workbench.localHistory.maxFileEntries": 500,
+    "workbench.localHistory.maxFileSize": 20256,
+    "github.copilot.chat.languageContext.fix.typescript.enabled": true,
+    "github.copilot.chat.languageContext.inline.typescript.enabled": true,
+    "github.copilot.chat.languageContext.typescript.enabled": true,
+    "github.copilot.chat.languageContext.typescript.includeDocumentation": true,
+    "github.copilot.chat.languageContext.typescript.items": "fillHalf"
+}

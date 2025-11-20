@@ -62,10 +62,36 @@
 		},
 		"scm.alwaysShowRepositories": true,
 		"scm.alwaysShowActions": true,
-		"terminal.integrated.accessibleViewPreserveCursorPosition": false,
+		"terminal.integrated.accessibleViewPreserveCursorPosition": true,
 		"remote.downloadExtensionsLocally": true,
 		"notebook.consolidatedRunButton": true,
 		"chat.agent.thinking.collapsedTools": "all",
-		"chat.agentSessionsViewLocation": "view"
+		"chat.agentSessionsViewLocation": "view",
+		"html.format.indentInnerHtml": true,
+		"html.format.indentHandlebars": true,
+		"github.copilot.chat.alternateGptPrompt.enabled": true,
+		"github.copilot.chat.anthropic.thinking.enabled": true,
+		"github.copilot.chat.languageContext.typescript.items": "fillHalf",
+		"github.copilot.chat.responsesApiReasoningEffort": "default",
+		"terminal.explorerKind": "both",
+		"terminal.integrated.accessibleViewFocusOnCommandExecution": true,
+		"chat.agent.thinkingStyle": "fixedScrolling",
+		"haskell.plugin.stan.globalOn": true,
+		"workbench.tree.enableStickyScroll": true,
+		"workbench.tree.renderIndentGuides": "onHover",
+		"workbench.view.showQuietly": {
+			"workbench.panel.output": true
+		},
+		"workbench.view.alwaysShowHeaderActions": true,
+		"accessibility.openChatEditedFiles": true,
+		"explorer.decorations.colors": false,
+		"explorer.decorations.badges": false,
+		"debug.allowBreakpointsEverywhere": true,
+		"debug.terminal.clearBeforeReusing": true,
+		"debug.showVariableTypes": true,
+		"debug.showSubSessionsInToolBar": true,
+		"accessibility.underlineLinks": true,
+		"chat.agent.maxRequests": 55,
+		"notebook.variablesView": true
 	}
 }
