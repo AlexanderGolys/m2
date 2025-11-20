@@ -1,3 +1,30 @@
+# Statistics endpoint
+from fastapi.responses import JSONResponse
+
+@app.get("/admin/stats")
+async def get_stats():
+    with stats_lock:
+        # Convert sets to list for JSON serialization
+        stats_copy = {
+            'requests_per_day': dict(stats['requests_per_day']),
+            'unique_users_per_day': {k: list(v) for k, v in stats['unique_users_per_day'].items()}
+        }
+    return JSONResponse(content=stats_copy)
+from fastapi import Request
+# Middleware to track statistics
+@app.middleware("http")
+async def stats_middleware(request: Request, call_next):
+    date_str = datetime.utcnow().strftime('%Y-%m-%d')
+    ip = request.client.host if request.client else 'unknown'
+    with stats_lock:
+        # Increment requests per day
+        stats['requests_per_day'].setdefault(date_str, 0)
+        stats['requests_per_day'][date_str] += 1
+        # Track unique users per day
+        stats['unique_users_per_day'].setdefault(date_str, set())
+        stats['unique_users_per_day'][date_str].add(ip)
+    response = await call_next(request)
+    return response
 import resource
 import subprocess
 import tempfile
@@ -6,11 +33,22 @@ from pathlib import Path
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+
+import threading
+from datetime import datetime
 import logging
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+# In-memory statistics (thread-safe)
+stats_lock = threading.Lock()
+stats = {
+    'requests_per_day': {},  # {date_str: int}
+    'unique_users_per_day': {},  # {date_str: set(ip)}
+}
 
 app = FastAPI(
     title="Macaulay2 Web Interface API",
@@ -50,7 +88,8 @@ def set_resource_limits():
     """Set resource limits for child process (Linux/Unix only)"""
     try:
         # 512MB memory limit (soft and hard)
-        resource.setrlimit(resource.RLIMIT_AS, (512_000_000, 512_000_000))
+        re
+        source.setrlimit(resource.RLIMIT_AS, (512_000_000, 512_000_000))
         # 30 second CPU time limit
         resource.setrlimit(resource.RLIMIT_CPU, (30, 30))
         # Limit number of processes
@@ -248,6 +287,11 @@ async def test_m2():
     return results
 
 
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    import argparse
+    parser = argparse.ArgumentParser(description="Run Macaulay2 Web Interface API server.")
+    parser.add_argument('--port', type=int, default=8000, help='Port to run the server on (default: 8000)')
+    args = parser.parse_args()
+    uvicorn.run(app, host="0.0.0.0", port=args.port)
