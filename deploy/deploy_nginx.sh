@@ -1,4 +1,5 @@
 #!/bin/bash
+## Demo: This comment was added as part of a CLI-based PR/merge workflow demonstration.
 set -e
 
 # Path to your config in the repo
