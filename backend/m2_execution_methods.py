@@ -1,7 +1,3 @@
-"""
-Alternative execution methods for Macaulay2
-Use these if the default --script method doesn't produce output
-"""
 
 import subprocess
 import tempfile

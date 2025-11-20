@@ -7,7 +7,7 @@ echo "================================"
 
 # Check if M2 is installed
 if command -v M2 &> /dev/null; then
-    echo "✓ M2 is installed"
+    echo "M2 is installed"
     echo ""
     
     echo "M2 Version:"
