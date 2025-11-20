@@ -5,7 +5,7 @@ server {
     listen 80;
     server_name macaulay2.fun www.macaulay2.fun;
 
-    root /var/www/html/m2-prod-interface/frontend/dist;
+    root /var/www/html/m2-interface/frontend/dist;
     index index.html;
 
     # Proxy API requests to backend
