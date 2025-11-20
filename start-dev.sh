@@ -14,6 +14,7 @@ fi
 
 echo "✅ Macaulay2 found: $(M2 --version | head -n 1)"
 
+
 # Start backend in background
 echo ""
 echo "Starting backend..."
@@ -27,9 +28,11 @@ fi
 source venv/bin/activate
 pip install -q -r requirements.txt
 
-python main.py &
+# Use port 8001 for dev, default to 8000 if not specified
+BACKEND_PORT=8001
+python main.py --port $BACKEND_PORT &
 BACKEND_PID=$!
-echo "✅ Backend started (PID: $BACKEND_PID)"
+echo "✅ Backend started on port $BACKEND_PORT (PID: $BACKEND_PID)"
 
 cd ..
 
@@ -55,8 +58,8 @@ echo "✨ Application is running!"
 echo "========================================="
 echo ""
 echo "Frontend: http://localhost:5173"
-echo "Backend:  http://localhost:8000"
-echo "API Docs: http://localhost:8000/docs"
+echo "Backend:  http://localhost:$BACKEND_PORT"
+echo "API Docs: http://localhost:$BACKEND_PORT/docs"
 echo ""
 echo "Press Ctrl+C to stop both servers"
 echo ""

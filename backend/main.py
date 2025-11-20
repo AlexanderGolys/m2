@@ -248,6 +248,11 @@ async def test_m2():
     return results
 
 
+
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    import argparse
+    parser = argparse.ArgumentParser(description="Run Macaulay2 Web Interface API server.")
+    parser.add_argument('--port', type=int, default=8000, help='Port to run the server on (default: 8000)')
+    args = parser.parse_args()
+    uvicorn.run(app, host="0.0.0.0", port=args.port)
