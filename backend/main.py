@@ -11,11 +11,13 @@ from pydantic import BaseModel
 import threading
 from datetime import datetime
 import logging
+import json
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+STATS_FILE = "stats.json"
 
 # In-memory statistics (thread-safe)
 stats_lock = threading.Lock()
@@ -23,6 +25,45 @@ stats = {
     'requests_per_day': {},  # {date_str: int}
     'unique_users_per_day': {},  # {date_str: set(ip)}
 }
+
+def load_stats():
+    global stats
+    if os.path.exists(STATS_FILE):
+        try:
+            with open(STATS_FILE, 'r') as f:
+                data = json.load(f)
+                # Convert lists back to sets for unique_users_per_day
+                if 'unique_users_per_day' in data:
+                    for date_str, users in data['unique_users_per_day'].items():
+                        data['unique_users_per_day'][date_str] = set(users)
+                # Merge loaded stats with default structure to ensure all keys exist
+                if 'requests_per_day' not in data:
+                    data['requests_per_day'] = {}
+                if 'unique_users_per_day' not in data:
+                    data['unique_users_per_day'] = {}
+                
+                with stats_lock:
+                    stats = data
+            logger.info("Stats loaded successfully")
+        except Exception as e:
+            logger.error(f"Failed to load stats: {e}")
+
+def save_stats():
+    try:
+        with stats_lock:
+            # Convert sets to list for JSON serialization
+            stats_copy = {
+                'requests_per_day': stats['requests_per_day'],
+                'unique_users_per_day': {k: list(v) for k, v in stats['unique_users_per_day'].items()}
+            }
+        
+        with open(STATS_FILE, 'w') as f:
+            json.dump(stats_copy, f)
+    except Exception as e:
+        logger.error(f"Failed to save stats: {e}")
+
+# Load stats on startup
+load_stats()
 
 app = FastAPI(
     title="Macaulay2 Web Interface API",
@@ -44,6 +85,10 @@ async def get_stats():
 # Middleware to track statistics
 @app.middleware("http")
 async def stats_middleware(request: Request, call_next):
+    # Skip stats for stats endpoint itself to avoid infinite loop/noise
+    if request.url.path == "/admin/stats":
+        return await call_next(request)
+
     date_str = datetime.utcnow().strftime('%Y-%m-%d')
     ip = request.client.host if request.client else 'unknown'
     with stats_lock:
@@ -53,6 +98,10 @@ async def stats_middleware(request: Request, call_next):
         # Track unique users per day
         stats['unique_users_per_day'].setdefault(date_str, set())
         stats['unique_users_per_day'][date_str].add(ip)
+    
+    # Save stats
+    save_stats()
+    
     response = await call_next(request)
     return response
 
