@@ -87,15 +87,14 @@ class CodeResponse(BaseModel):
 def set_resource_limits():
     """Set resource limits for child process (Linux/Unix only)"""
     try:
-        # 512MB memory limit (soft and hard)
-        re
-        source.setrlimit(resource.RLIMIT_AS, (512_000_000, 512_000_000))
-        # 30 second CPU time limit
-        resource.setrlimit(resource.RLIMIT_CPU, (30, 30))
+        # 2GB memory limit (soft and hard)
+        resource.setrlimit(resource.RLIMIT_AS, (2_000_000_000, 2_000_000_000))
+        # 120 second CPU time limit
+        resource.setrlimit(resource.RLIMIT_CPU, (120, 120))
         # Limit number of processes
-        resource.setrlimit(resource.RLIMIT_NPROC, (10, 10))
-        # Limit file size to 10MB
-        resource.setrlimit(resource.RLIMIT_FSIZE, (10_000_000, 10_000_000))
+        resource.setrlimit(resource.RLIMIT_NPROC, (50, 50))
+        # Limit file size to 100MB
+        resource.setrlimit(resource.RLIMIT_FSIZE, (100_000_000, 100_000_000))
     except (ValueError, OSError, AttributeError) as e:
         # On Windows or if limits can't be set, just log warning
         logger.warning(f"Could not set resource limits (this is normal on Windows): {e}")
