@@ -1,37 +1,11 @@
-# Statistics endpoint
-from fastapi.responses import JSONResponse
-
-@app.get("/admin/stats")
-async def get_stats():
-    with stats_lock:
-        # Convert sets to list for JSON serialization
-        stats_copy = {
-            'requests_per_day': dict(stats['requests_per_day']),
-            'unique_users_per_day': {k: list(v) for k, v in stats['unique_users_per_day'].items()}
-        }
-    return JSONResponse(content=stats_copy)
-from fastapi import Request
-# Middleware to track statistics
-@app.middleware("http")
-async def stats_middleware(request: Request, call_next):
-    date_str = datetime.utcnow().strftime('%Y-%m-%d')
-    ip = request.client.host if request.client else 'unknown'
-    with stats_lock:
-        # Increment requests per day
-        stats['requests_per_day'].setdefault(date_str, 0)
-        stats['requests_per_day'][date_str] += 1
-        # Track unique users per day
-        stats['unique_users_per_day'].setdefault(date_str, set())
-        stats['unique_users_per_day'][date_str].add(ip)
-    response = await call_next(request)
-    return response
 import resource
 import subprocess
 import tempfile
 import os
 from pathlib import Path
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
 import threading
@@ -55,6 +29,32 @@ app = FastAPI(
     description="Execute Macaulay2 code with resource limits",
     version="1.0.0"
 )
+
+# Statistics endpoint
+@app.get("/admin/stats")
+async def get_stats():
+    with stats_lock:
+        # Convert sets to list for JSON serialization
+        stats_copy = {
+            'requests_per_day': dict(stats['requests_per_day']),
+            'unique_users_per_day': {k: list(v) for k, v in stats['unique_users_per_day'].items()}
+        }
+    return JSONResponse(content=stats_copy)
+
+# Middleware to track statistics
+@app.middleware("http")
+async def stats_middleware(request: Request, call_next):
+    date_str = datetime.utcnow().strftime('%Y-%m-%d')
+    ip = request.client.host if request.client else 'unknown'
+    with stats_lock:
+        # Increment requests per day
+        stats['requests_per_day'].setdefault(date_str, 0)
+        stats['requests_per_day'][date_str] += 1
+        # Track unique users per day
+        stats['unique_users_per_day'].setdefault(date_str, set())
+        stats['unique_users_per_day'][date_str].add(ip)
+    response = await call_next(request)
+    return response
 
 # CORS configuration - adjust origins for production
 app.add_middleware(
