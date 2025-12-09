@@ -64,3 +64,21 @@ export async function checkHealth(): Promise<{ status: string }> {
   }
   return await response.json();
 }
+
+export interface StatsResponse {
+  requests_per_day: Record<string, number>;
+  unique_users_per_day: Record<string, string[]>;
+}
+
+export async function getStats(): Promise<StatsResponse> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/admin/stats`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch stats');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching stats:', error);
+    throw error;
+  }
+}
