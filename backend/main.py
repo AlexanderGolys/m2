@@ -17,7 +17,9 @@ import json
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-STATS_FILE = "stats.json"
+# Use absolute path for stats file to avoid CWD issues
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATS_FILE = os.path.join(BASE_DIR, "stats.json")
 
 # In-memory statistics (thread-safe)
 stats_lock = threading.Lock()
@@ -44,9 +46,9 @@ def load_stats():
                 
                 with stats_lock:
                     stats = data
-            logger.info("Stats loaded successfully")
+            logger.info(f"Stats loaded successfully from {STATS_FILE}")
         except Exception as e:
-            logger.error(f"Failed to load stats: {e}")
+            logger.error(f"Failed to load stats from {STATS_FILE}: {e}")
 
 def save_stats():
     try:
@@ -60,7 +62,7 @@ def save_stats():
         with open(STATS_FILE, 'w') as f:
             json.dump(stats_copy, f)
     except Exception as e:
-        logger.error(f"Failed to save stats: {e}")
+        logger.error(f"Failed to save stats to {STATS_FILE}: {e}")
 
 # Load stats on startup
 load_stats()
