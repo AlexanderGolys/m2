@@ -203,11 +203,19 @@ async def execute_code(request: CodeRequest):
             # Only keep stderr if there's an actual error (non-zero return code)
             stderr_output = result.stderr if result.returncode != 0 else ""
             
+            # Create detailed error message including stderr content
+            error_message = None
+            if result.returncode != 0:
+                if stderr_output.strip():
+                    error_message = f"Macaulay2 error:\n{stderr_output}"
+                else:
+                    error_message = f"Process exited with code {result.returncode}"
+            
             return CodeResponse(
                 stdout=result.stdout,
                 stderr=stderr_output,
                 success=result.returncode == 0,
-                error_message=None if result.returncode == 0 else f"Process exited with code {result.returncode}"
+                error_message=error_message
             )
         
         except subprocess.TimeoutExpired:
