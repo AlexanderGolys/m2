@@ -211,28 +211,30 @@ async def execute_code(request: CodeRequest):
                     lines = stderr_output.strip().split('\n')
                     version_line = None
                     error_lines = []
-                    skip_next = False
+                    in_packages = False
                     
                     for line in lines:
                         if line.startswith('Macaulay2, version'):
-                            version_line = f"({line.strip()})"
-                        elif line.strip().startswith('with packages:'):
-                            skip_next = True
+                            version_line = line.strip()
+                        elif 'with packages:' in line:
+                            in_packages = True
                             continue
-                        elif skip_next:
-                            skip_next = False
-                            continue
-                        elif line.strip() and not line.startswith('Macaulay2, version'):
+                        elif in_packages:
+                            # Skip package list line(s) - they don't start with known prefixes
+                            if line.strip() and not any(line.strip().startswith(prefix) for prefix in ['stdio:', 'error:', '--']):
+                                continue
+                            else:
+                                in_packages = False
+                        
+                        # Collect actual error lines
+                        if line.strip() and not line.startswith('Macaulay2, version') and 'with packages:' not in line:
                             error_lines.append(line)
                     
                     # Build clean error message
-                    clean_error = []
-                    if version_line:
-                        clean_error.append(version_line)
-                    clean_error.append("Macaulay2 error:")
-                    clean_error.extend(error_lines)
-                    
-                    error_message = '\n'.join(clean_error)
+                    if error_lines:
+                        error_message = f"Macaulay2 error:\n" + '\n'.join(error_lines)
+                    else:
+                        error_message = f"Process exited with code {result.returncode}"
                 else:
                     error_message = f"Process exited with code {result.returncode}"
             
