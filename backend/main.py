@@ -207,7 +207,32 @@ async def execute_code(request: CodeRequest):
             error_message = None
             if result.returncode != 0:
                 if stderr_output.strip():
-                    error_message = f"Macaulay2 error:\n{stderr_output}"
+                    # Clean up stderr: extract version and actual error
+                    lines = stderr_output.strip().split('\n')
+                    version_line = None
+                    error_lines = []
+                    skip_next = False
+                    
+                    for line in lines:
+                        if line.startswith('Macaulay2, version'):
+                            version_line = f"({line.strip()})"
+                        elif line.strip().startswith('with packages:'):
+                            skip_next = True
+                            continue
+                        elif skip_next:
+                            skip_next = False
+                            continue
+                        elif line.strip() and not line.startswith('Macaulay2, version'):
+                            error_lines.append(line)
+                    
+                    # Build clean error message
+                    clean_error = []
+                    if version_line:
+                        clean_error.append(version_line)
+                    clean_error.append("Macaulay2 error:")
+                    clean_error.extend(error_lines)
+                    
+                    error_message = '\n'.join(clean_error)
                 else:
                     error_message = f"Process exited with code {result.returncode}"
             
