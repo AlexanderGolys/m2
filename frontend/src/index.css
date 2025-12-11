@@ -98,6 +98,7 @@
     --ring: 38 70% 70%;
     --radius: 0.5rem;
   }
+}
 
 @layer base {
   * {
