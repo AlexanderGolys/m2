@@ -90,11 +90,6 @@ export function DocsLayout({ left, right, children }: DocsLayoutProps) {
               Questions? Contact us at <a href="mailto:support@m2interface.com" className="hover:text-primary transition-colors">support@m2interface.com</a>
             </span>
           </div>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-primary transition-colors">Cookie Policy</a>
-          </div>
         </div>
       </footer>
     </div>
