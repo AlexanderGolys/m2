@@ -47,7 +47,7 @@ export function DocsLayout({ left, right, children }: DocsLayoutProps) {
         {/* Left sliding docs panel */}
         <aside
           className={
-            `fixed top-[var(--navbar-height,56px)] left-0 bottom-0 w-80 max-w-[80vw] border-r bg-card text-card-foreground shadow-xl z-30 transition-transform duration-300 ease-out ` +
+            `fixed top-[var(--navbar-height,56px)] left-0 bottom-0 w-[40rem] max-w-[80vw] border-r bg-card text-card-foreground shadow-xl z-30 transition-transform duration-300 ease-out ` +
             (showLeft ? 'translate-x-0' : '-translate-x-full')
           }
         >
@@ -72,7 +72,7 @@ export function DocsLayout({ left, right, children }: DocsLayoutProps) {
         <main
           className={
             `container mx-auto px-4 py-4 transition-[padding] duration-300 ease-out ` +
-            (showLeft ? 'lg:pl-80' : '') + ' ' + (showRight ? 'lg:pr-64' : '')
+            (showLeft ? 'lg:pl-[40rem]' : '') + ' ' + (showRight ? 'lg:pr-64' : '')
           }
         >
           <div className="min-h-[calc(100vh-56px)] rounded-lg bg-card text-card-foreground border">
