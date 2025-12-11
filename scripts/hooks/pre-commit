@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Prevent accidental commits on the server repository.
+# To enable on the server only:
+#   git config core.hooksPath scripts/hooks
+
+if [ -n "$(git rev-parse --is-inside-work-tree 2>/dev/null)" ]; then
+  echo "[server guard] Commits are disabled on this server checkout."
+  echo "Use your development machine to commit, then pull here via scripts/maintenance.sh."
+  exit 1
+fi

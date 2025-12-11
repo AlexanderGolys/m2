@@ -3,10 +3,9 @@
 set -e
 
 # --- Deployment Safety Checks ---
-FRONTEND_DIST="/var/www/html/m2-interface/frontend/dist"
+FRONTEND_DIST="/var/www/html/m2"
 NGINX_CONF="/etc/nginx/sites-available/macaulay2.fun"
 
-# Extract Nginx root from config
 NGINX_ROOT=$(awk '/root / {print $2}' "$NGINX_CONF" | tr -d ';')
 
 # Check if frontend build directory exists

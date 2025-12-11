@@ -73,3 +73,31 @@ npm run build
 ```
 
 Output will be in the `dist/` directory. Deploy to any static hosting service.
+
+## Layout and Panels
+
+The app uses a three-column layout wrapper (`DocsLayout`) with:
+
+- Left panel: Documentation/navigation (placeholder for now)
+- Center: Main content (Code Editor or Stats Dashboard)
+- Right panel: Tools/actions (placeholder for now)
+
+You should see a top navbar with two toggles:
+
+- "Hide Docs" / "Show Docs" to toggle the left panel
+- "Hide Tools" / "Show Tools" to toggle the right panel
+
+On mobile, panels stack vertically. On desktop, they render as columns.
+
+If you don’t see the panels:
+
+1. Pull the latest changes on the `main` branch
+2. Stop and restart the Vite dev server
+3. Hard-refresh the browser (Ctrl+Shift+R)
+
+## Admin Stats Route
+
+Browse to `/admin/stats` to view the basic usage stats dashboard. For example, in dev:
+
+- http://localhost:5173/admin/stats
+

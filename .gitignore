@@ -6,3 +6,6 @@ dist-ssr
 QUICKSTART.md
 WINDOWS-DEVELOPMENT.md
 DEPLOYMENT.md
+backend/venv/
+backend/.venv/
+backend/**/__pycache__/

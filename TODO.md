@@ -1,6 +1,3 @@
-# General 
-- Manage the server statistics - how many users are using the site, how many requests per day, etc.
-
 # Frontend:
 
 - Add panel to the right with menu listing pages with documentation

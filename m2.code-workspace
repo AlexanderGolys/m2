@@ -84,14 +84,20 @@
 		},
 		"workbench.view.alwaysShowHeaderActions": true,
 		"accessibility.openChatEditedFiles": true,
-		"explorer.decorations.colors": false,
-		"explorer.decorations.badges": false,
+		"explorer.decorations.colors": true,
+		"explorer.decorations.badges": true,
 		"debug.allowBreakpointsEverywhere": true,
 		"debug.terminal.clearBeforeReusing": true,
 		"debug.showVariableTypes": true,
 		"debug.showSubSessionsInToolBar": true,
 		"accessibility.underlineLinks": true,
 		"chat.agent.maxRequests": 55,
-		"notebook.variablesView": true
+		"notebook.variablesView": true,
+		"terminal.integrated.enableMultiLinePasteWarning": "never",
+		"terminal.integrated.useWslProfiles": false,
+		"editor.unusualLineTerminators": "off",
+		"terminal.integrated.allowMnemonics": false,
+		"terminal.integrated.ignoreBracketedPasteMode": false,
+		"workbench.settings.useSplitJSON": true
 	}
 }

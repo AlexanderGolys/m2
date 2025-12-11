@@ -44,18 +44,59 @@ m2/
 │   ├── main.py           # API server with M2 execution
 │   └── requirements.txt
 │
-├── deploy/               # Deployment scripts
-│   ├── setup_server.sh   # Initial server setup
-│   ├── deploy_backend.sh # Deploy backend
-│   ├── deploy_frontend.sh # Deploy frontend
-│   ├── setup_nginx.sh    # Configure Nginx
-│   └── setup_ssl.sh      # Setup SSL/HTTPS
+├── scripts/              # Maintenance and ops scripts
+│   ├── maintenance.sh    # Safe fast-forward pull + service restart
+│   └── new_site.sh       # Create and enable a new Nginx site (static + optional API)
 │
 ├── DEPLOYMENT.md         # Detailed deployment guide
 └── README.md            # This file
 ```
 
 ## � Quick Start
+### Server maintenance (after pull)
+
+On the VPS, use the maintenance script to safely update and restart the backend service:
+
+1) SSH into the server
+2) Change to the repository directory (e.g. `/var/www/m2-interface`)
+3) Run:
+
+```
+./scripts/maintenance.sh
+```
+
+Options:
+- `CLEAN=1 ./scripts/maintenance.sh` — discard all local changes with a hard reset to `origin/<current-branch>` before pulling.
+- `PURGE_IGNORED=1 ./scripts/maintenance.sh` — remove ignored files (e.g., dist, node_modules, __pycache__, venv) using `git clean -fdX`.
+- `PURGE_ALL=1 ./scripts/maintenance.sh` — remove ALL untracked files using `git clean -fdx` (destructive).
+- `REDEPLOY_BACKEND=1 ./scripts/maintenance.sh` — run `deploy/deploy_backend.sh` after updating.
+- `REDEPLOY_FRONTEND=1 ./scripts/maintenance.sh` — run `deploy/deploy_frontend.sh` after updating.
+- `SERVICE=m2-backend ./scripts/maintenance.sh` — override systemd service name if different.
+
+Policy: local changes on the server are not allowed. The script aborts if the working tree is dirty unless you explicitly set `CLEAN=1` to reset to remote state. Use `PURGE_IGNORED=1` (or `PURGE_ALL=1`) to remove generated or stale artifacts that may be inconsistent with the new version. Combine with `REDEPLOY_*` flags to rebuild and restart services.
+
+### Host additional websites (multi-site)
+
+Use the site builder to add new domains on the same machine. It creates an Nginx server block, enables it, and optionally configures SSL.
+
+Examples:
+
+```
+# Production-like site with API on port 8000 and SSL
+./scripts/new_site.sh --domain example.com --root /var/www/prod/m2 --api-port 8000 --ssl --www
+
+# Dev site with API on port 8001 (HTTP only)
+./scripts/new_site.sh --domain dev.example.com --root /var/www/dev/m2 --api-port 8001
+
+# Static-only site with SSL
+./scripts/new_site.sh --domain static.example.com --root /var/www/static --ssl
+```
+
+Notes:
+- Make sure your DNS A record points to this server before requesting SSL.
+- For backend services, run separate systemd units on distinct ports (e.g., 8000 prod, 8001 dev) and proxy via `--api-port`.
+- The script is idempotent: re-running updates the Nginx config and reloads it.
+
 
 ### Prerequisites
 

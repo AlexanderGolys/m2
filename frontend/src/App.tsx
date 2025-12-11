@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import './index.css';
 import { CodeEditor } from './components/CodeEditor';
 import { StatsDashboard } from './components/StatsDashboard';
+import { DocsLayout } from './components/layout/DocsLayout';
+import { LeftPanel } from './components/docs/LeftPanel';
+import { RightPanel } from './components/tools/RightPanel';
 
 function App() {
   const [path, setPath] = useState(window.location.pathname);
@@ -13,9 +16,14 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background relative">
-      {path === '/admin/stats' ? <StatsDashboard /> : <CodeEditor />}
-    </div>
+    <DocsLayout
+      left={<LeftPanel />}
+      right={<RightPanel />}
+    >
+      <div className="min-h-screen bg-background relative">
+        {path === '/admin/stats' ? <StatsDashboard /> : <CodeEditor />}
+      </div>
+    </DocsLayout>
   );
 }
 
