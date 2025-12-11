@@ -71,7 +71,7 @@ export function DocsLayout({ left, right, children }: DocsLayoutProps) {
         {/* Main content occupies full width; add padding when panels visible on large screens */}
         <main
           className={
-            `container mx-auto px-4 py-4 transition-[padding] duration-300 ease-out ` +
+            `w-full px-4 py-4 transition-[padding] duration-300 ease-out ` +
             (showLeft ? 'lg:pl-[40rem]' : '') + ' ' + (showRight ? 'lg:pr-64' : '')
           }
         >
