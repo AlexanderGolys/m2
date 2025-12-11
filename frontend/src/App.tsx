@@ -4,7 +4,7 @@ import { CodeEditor } from './components/CodeEditor';
 import { StatsDashboard } from './components/StatsDashboard';
 import { DocsLayout } from './components/layout/DocsLayout';
 import { LeftPanel } from './components/docs/LeftPanel';
-import { RightPanel } from './components/tools/RightPanel';
+import { RightPanel, ThemeKey } from './components/tools/RightPanel';
 
 function App() {
   const [path, setPath] = useState(window.location.pathname);

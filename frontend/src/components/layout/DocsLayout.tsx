@@ -13,6 +13,16 @@ interface DocsLayoutProps {
 export function DocsLayout({ left, right, children }: DocsLayoutProps) {
   const [showLeft, setShowLeft] = useState(true);
   const [showRight, setShowRight] = useState(true);
+  const [theme, setTheme] = useState<'theme-dark' | 'theme-slate' | 'theme-emerald' | 'theme-amber'>('theme-dark');
+
+  // Apply theme class to <html> element
+  // We use a small effect-less update here since this component is top-level.
+  const applyTheme = (next: typeof theme) => {
+    setTheme(next);
+    const root = document.documentElement;
+    root.classList.remove('theme-dark', 'theme-slate', 'theme-emerald', 'theme-amber');
+    root.classList.add(next);
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
@@ -42,40 +52,43 @@ export function DocsLayout({ left, right, children }: DocsLayoutProps) {
         </div>
       </header>
 
-      {/* Main content area */}
-      <div className="flex-1 container mx-auto px-4 py-4 grid grid-cols-12 gap-4">
-        {/* Left docs panel (~1/3 width on desktop) */}
-        {showLeft && (
-          <aside className="col-span-12 md:col-span-4 lg:col-span-3">
-            <div className="h-full border rounded-lg bg-card text-card-foreground p-3">
-              {left ?? <div className="text-sm opacity-70">Docs panel (empty)</div>}
-            </div>
-          </aside>
-        )}
-
-        {/* Center content */}
-        <main
+      {/* Side panels overlay and main content */}
+      <div className="flex-1 relative">
+        {/* Left sliding docs panel */}
+        <aside
           className={
-            showLeft && showRight
-              ? 'col-span-12 md:col-span-4 lg:col-span-6'
-              : showLeft || showRight
-              ? 'col-span-12 md:col-span-8 lg:col-span-9'
-              : 'col-span-12'
+            `fixed top-[var(--navbar-height,56px)] left-0 bottom-0 w-80 max-w-[80vw] border-r bg-card text-card-foreground shadow-xl z-30 transition-transform duration-300 ease-out ` +
+            (showLeft ? 'translate-x-0' : '-translate-x-full')
           }
         >
-          <div className="h-full border rounded-lg bg-card text-card-foreground">
+          <div className="h-full overflow-y-auto p-4">
+            {left ?? <div className="text-sm opacity-70">Docs panel (empty)</div>}
+          </div>
+        </aside>
+
+        {/* Right sliding tools panel */}
+        <aside
+          className={
+            `fixed top-[var(--navbar-height,56px)] right-0 bottom-0 w-80 max-w-[80vw] border-l bg-card text-card-foreground shadow-xl z-30 transition-transform duration-300 ease-out ` +
+            (showRight ? 'translate-x-0' : 'translate-x-full')
+          }
+        >
+          <div className="h-full overflow-y-auto p-4">
+            {right ?? <div className="text-sm opacity-70">Tools panel (empty)</div>}
+          </div>
+        </aside>
+
+        {/* Main content occupies full width; add padding when panels visible on large screens */}
+        <main
+          className={
+            `container mx-auto px-4 py-4 transition-[padding] duration-300 ease-out ` +
+            (showLeft ? 'lg:pl-80' : '') + ' ' + (showRight ? 'lg:pr-80' : '')
+          }
+        >
+          <div className="min-h-[calc(100vh-56px)] rounded-lg bg-card text-card-foreground border">
             {children}
           </div>
         </main>
-
-        {/* Right tools panel (~1/3 width on desktop) */}
-        {showRight && (
-          <aside className="col-span-12 md:col-span-4 lg:col-span-3">
-            <div className="h-full border rounded-lg bg-card text-card-foreground p-3">
-              {right ?? <div className="text-sm opacity-70">Tools panel (empty)</div>}
-            </div>
-          </aside>
-        )}
       </div>
 
       {/* Footer */}
