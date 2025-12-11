@@ -13,16 +13,6 @@ interface DocsLayoutProps {
 export function DocsLayout({ left, right, children }: DocsLayoutProps) {
   const [showLeft, setShowLeft] = useState(true);
   const [showRight, setShowRight] = useState(true);
-  const [theme, setTheme] = useState<'theme-dark' | 'theme-slate' | 'theme-emerald' | 'theme-amber'>('theme-dark');
-
-  // Apply theme class to <html> element
-  // We use a small effect-less update here since this component is top-level.
-  const applyTheme = (next: typeof theme) => {
-    setTheme(next);
-    const root = document.documentElement;
-    root.classList.remove('theme-dark', 'theme-slate', 'theme-emerald', 'theme-amber');
-    root.classList.add(next);
-  };
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
