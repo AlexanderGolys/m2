@@ -1,4 +1,4 @@
-import React, { ReactNode, useState } from 'react';
+import { ReactNode, useState } from 'react';
 
 // High-level layout with a navbar, left docs panel (~1/3), main content, right tools panel,
 // and a footer. Panels are currently empty placeholders to plan visual space.
