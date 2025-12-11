@@ -14,7 +14,7 @@ export function RightPanel(
       <div className="text-sm opacity-70">
         This is a placeholder for tools, actions, and configuration. Plan space for run controls,
         session management, environment settings, and outputs.
-      </div>
+      // Right tools panel with placeholder actions and a theme switcher
       {/* Theme switcher moved to right panel */}
       <div className="flex items-center gap-2">
         <label className="text-xs opacity-70" htmlFor="theme-select">Theme:</label>
@@ -29,6 +29,33 @@ export function RightPanel(
           <option value="theme-emerald">Emerald</option>
           <option value="theme-amber">Amber</option>
         </select>
+
+            {/* Theme Switcher */}
+            <div className="mt-4">
+              <label htmlFor="theme-switcher" className="block text-xs opacity-70 mb-1">Theme</label>
+              <select
+                id="theme-switcher"
+                className="w-full px-2 py-1 text-sm rounded bg-background border"
+                defaultValue={document.documentElement.classList.contains('theme-slate')
+                  ? 'theme-slate'
+                  : document.documentElement.classList.contains('theme-emerald')
+                  ? 'theme-emerald'
+                  : document.documentElement.classList.contains('theme-amber')
+                  ? 'theme-amber'
+                  : 'theme-dark'}
+                onChange={(e) => {
+                  const next = e.target.value as 'theme-dark' | 'theme-slate' | 'theme-emerald' | 'theme-amber';
+                  const root = document.documentElement;
+                  root.classList.remove('theme-dark', 'theme-slate', 'theme-emerald', 'theme-amber');
+                  root.classList.add(next);
+                }}
+              >
+                <option value="theme-dark">Dark</option>
+                <option value="theme-slate">Slate</option>
+                <option value="theme-emerald">Emerald</option>
+                <option value="theme-amber">Amber</option>
+              </select>
+            </div>
       </div>
       <div className="grid grid-cols-2 gap-2">
         <button className="px-3 py-2 text-sm border rounded hover:bg-muted">Run</button>

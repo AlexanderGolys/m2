@@ -69,7 +69,7 @@ export function DocsLayout({ left, right, children }: DocsLayoutProps) {
         {/* Right sliding tools panel */}
         <aside
           className={
-            `fixed top-[var(--navbar-height,56px)] right-0 bottom-0 w-80 max-w-[80vw] border-l bg-card text-card-foreground shadow-xl z-30 transition-transform duration-300 ease-out ` +
+            `fixed top-[var(--navbar-height,56px)] right-0 bottom-0 w-64 max-w-[70vw] border-l bg-card text-card-foreground shadow-xl z-30 transition-transform duration-300 ease-out ` +
             (showRight ? 'translate-x-0' : 'translate-x-full')
           }
         >
@@ -82,7 +82,7 @@ export function DocsLayout({ left, right, children }: DocsLayoutProps) {
         <main
           className={
             `container mx-auto px-4 py-4 transition-[padding] duration-300 ease-out ` +
-            (showLeft ? 'lg:pl-80' : '') + ' ' + (showRight ? 'lg:pr-80' : '')
+            (showLeft ? 'lg:pl-80' : '') + ' ' + (showRight ? 'lg:pr-64' : '')
           }
         >
           <div className="min-h-[calc(100vh-56px)] rounded-lg bg-card text-card-foreground border">
