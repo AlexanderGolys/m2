@@ -20,10 +20,6 @@ export function DocsLayout({ left, right, children }: DocsLayoutProps) {
       <header className="border-b bg-card text-card-foreground">
         <div className="container mx-auto px-4 py-2 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <span className="font-semibold">M2 Interface</span>
-            <span className="text-xs opacity-70">Notebook & Docs</span>
-          </div>
-          <div className="flex items-center gap-2">
             <button
               className="px-2 py-1 text-sm rounded hover:bg-muted"
               onClick={() => setShowLeft((v) => !v)}
@@ -31,6 +27,10 @@ export function DocsLayout({ left, right, children }: DocsLayoutProps) {
             >
               {showLeft ? 'Hide Docs' : 'Show Docs'}
             </button>
+            <span className="font-semibold">M2 Interface</span>
+            <span className="text-xs opacity-70">Notebook & Docs</span>
+          </div>
+          <div className="flex items-center gap-2">
             <button
               className="px-2 py-1 text-sm rounded hover:bg-muted"
               onClick={() => setShowRight((v) => !v)}
