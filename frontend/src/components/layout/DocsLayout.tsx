@@ -82,9 +82,19 @@ export function DocsLayout({ left, right, children }: DocsLayoutProps) {
       </div>
 
       {/* Footer */}
-      <footer className="border-t bg-card text-card-foreground">
-        <div className="container mx-auto px-4 py-3 text-sm opacity-70">
-          © {new Date().getFullYear()} M2 Interface — Space planning preview
+      <footer className="border-t bg-card text-card-foreground mt-auto">
+        <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm opacity-80">
+          <div className="flex flex-col gap-1 text-center md:text-left">
+            <span className="font-medium">&copy; {new Date().getFullYear()} M2 Interface. All rights reserved.</span>
+            <span>
+              Questions? Contact us at <a href="mailto:support@m2interface.com" className="hover:text-primary transition-colors">support@m2interface.com</a>
+            </span>
+          </div>
+          <div className="flex gap-6">
+            <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
+            <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
+            <a href="#" className="hover:text-primary transition-colors">Cookie Policy</a>
+          </div>
         </div>
       </footer>
     </div>
